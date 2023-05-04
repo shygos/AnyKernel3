@@ -34,6 +34,18 @@ PATCH_VBMETA_FLAG=auto;
 # import functions/variables and setup patching - see for reference (DO NOT REMOVE)
 . tools/ak3-core.sh;
 
+if mountpoint -q /data; then
+	ui_print " ";
+	ui_print "[+] Backing up boot...";
+
+	dd if=/dev/block/by-name/boot of=/sdcard/backup_boot.img;
+	if [ $? != 0 ]; then
+		ui_print "[!] Backup failed; proceeding anyway . . .";
+	else
+		ui_print "[+] Done";
+	fi
+fi
+
 # boot install
 split_boot;
 flash_boot;
