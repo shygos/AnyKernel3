@@ -35,24 +35,33 @@ PATCH_VBMETA_FLAG=auto;
 . tools/ak3-core.sh;
 
 if mountpoint -q /data; then
-	ui_print " ";
-	ui_print "[+] Backing up boot...";
+	[ ! -f /sdcard/backup_boot.img ] && DO_BOOT_BACKUP=1
+	[ ! -f /sdcard/backup_dtbo.img ] && DO_DTBO_BACKUP=1
 
-	dd if=/dev/block/by-name/boot of=/sdcard/backup_boot.img;
-	if [ $? != 0 ]; then
-		ui_print "[!] Backup failed; proceeding anyway . . .";
+	ui_print " ";
+	if [ $DO_BOOT_BACKUP ]; then
+		ui_print "[+] Backing up boot...";
+		dd if=/dev/block/by-name/boot of=/sdcard/backup_boot.img;
+		if [ $? != 0 ]; then
+			ui_print "[!] Backup failed; proceeding anyway . . .";
+		else
+			ui_print "[+] Done";
+		fi
 	else
-		ui_print "[+] Done";
+		ui_print "[!] Found existing backup_boot.img, skipping backup"
 	fi
 
 	ui_print " ";
-	ui_print "[+] Backing up dtbo...";
-
-	dd if=/dev/block/by-name/dtbo of=/sdcard/backup_dtbo.img;
-	if [ $? != 0 ]; then
-		ui_print "[!] Backup failed; proceeding anyway . . .";
+	if [ $DO_DTBO_BACKUP ]; then
+		ui_print "[+] Backing up dtbo...";
+		dd if=/dev/block/by-name/dtbo of=/sdcard/backup_dtbo.img;
+		if [ $? != 0 ]; then
+			ui_print "[!] Backup failed; proceeding anyway . . .";
+		else
+			ui_print "[+] Done";
+		fi
 	else
-		ui_print "[+] Done";
+		ui_print "[!] Found existing backup_dtbo.img, skipping backup"
 	fi
 fi
 
