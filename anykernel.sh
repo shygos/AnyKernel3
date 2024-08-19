@@ -44,6 +44,16 @@ if mountpoint -q /data; then
 	else
 		ui_print "[+] Done";
 	fi
+
+	ui_print " ";
+	ui_print "[+] Backing up dtbo...";
+
+	dd if=/dev/block/by-name/dtbo of=/sdcard/backup_dtbo.img;
+	if [ $? != 0 ]; then
+		ui_print "[!] Backup failed; proceeding anyway . . .";
+	else
+		ui_print "[+] Done";
+	fi
 fi
 
 # boot install
