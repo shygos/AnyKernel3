@@ -11,7 +11,7 @@ do.systemless=1
 do.cleanup=1
 do.cleanuponabort=0
 device.name1=
-supported.versions=
+supported.versions=12-15
 supported.patchlevels=
 supported.vendorpatchlevels=
 '; } # end properties
